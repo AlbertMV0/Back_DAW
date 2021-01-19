@@ -23,4 +23,6 @@ class Alumno extends Model
     {
         return $this->hasOne('App\Clase','id_clase');
     }
+
+    
 }
