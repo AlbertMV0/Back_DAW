@@ -11,16 +11,16 @@ class Alumno extends Model
 
     public function comentarios()
     {
-        return $this->hasMany('App\FreeTimesVideo');
+        return $this->hasMany('App\Comentario','fecha');
     }
 
     public function padre()
     {
-        return $this->hasMany('App\Alumno_padre');
+        return $this->hasMany('App\Alumno_padre','id_alumno_padre');
     }
 
     public function clase()
     {
-        return $this->hasOne('App\Clase');
+        return $this->hasOne('App\Clase','id_clase');
     }
 }
