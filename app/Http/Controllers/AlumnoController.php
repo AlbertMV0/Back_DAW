@@ -12,8 +12,9 @@ class AlumnoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    { 
+        $response = ['message' => 'alumno index'];
+        return response($response, 200);
     }
 
     /**

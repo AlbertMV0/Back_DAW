@@ -32,5 +32,10 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
 Route::middleware('auth:api')->group(function () {
     // our routes to be protected will go in here
+    Route::get('/getAllAlumnos', 'AlumnoController@index')->name('alumnos');
     Route::post('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
 });
+
+//Por ejemplo si quiero que tal ruta solo pueda ser para administradores, pondre aqui el
+//middleware del administrador
+Route::post('route','Controller@method')->middleware('<middleware-name-here>');
