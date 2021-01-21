@@ -19,4 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('usuarios','UsuarioController@getAllUsuarios');
 
 //rousources para generar 
-Route::resource('usuarios','UsuarioController@getAllUsuarios');
+Route::resource('usuarioss','UsuarioController@getAllUsuarios');
