@@ -2,6 +2,7 @@
 
 namespace App;
 
+<<<<<<< Updated upstream
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -36,4 +37,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+=======
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+
+class User extends Model
+{
+    use HasApiTokens, Notifiable;
+protected $fillable =['name','email','password','apellidos','telefono','nivel']; 
+
+>>>>>>> Stashed changes
 }

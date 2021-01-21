@@ -19,6 +19,12 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+<<<<<<< Updated upstream
+=======
+        //ANTES_CORS\Fruitcake\Cors\HandleCors::class,
+        \App\Http\Middleware\ForceJsonResponse::class,//This would make sure that the ForceJsonResponse middleware is run on every request.
+        \App\Http\Middleware\Cors::class,
+>>>>>>> Stashed changes
     ];
 
     /**
@@ -60,6 +66,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 
     /**
