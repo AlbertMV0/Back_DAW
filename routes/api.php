@@ -17,3 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('usuarios','UsuarioController@getAllUsuarios');
+
+//rousources para generar 
+Route::resource('usuarios','UsuarioController@getAllUsuarios');
