@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Alumno;
 
 class AlumnoController extends Controller
 {
@@ -13,8 +14,8 @@ class AlumnoController extends Controller
      */
     public function index()
     { 
-        $response = ['message' => 'alumno index'];
-        return response($response, 200);
+        $alumnos=Alumno::all();
+        return response()->json($alumnos);
     }
 
     /**

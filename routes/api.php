@@ -17,25 +17,21 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::group(['middleware' => ['cors', 'json.response']], function () {
-
-    // ...
-
     // public routes
     Route::post('/login', 'Auth\ApiAuthController@login')->name('login.api');
     Route::post('/register','Auth\ApiAuthController@register')->name('register.api');
-    Route::post('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
-
-    // ...
-
 });
 
-Route::middleware('auth:api')->group(function () {
-    // our routes to be protected will go in here
-    Route::get('/getAllAlumnos', 'AlumnoController@index')->name('alumnos');
+//Para usuarios general (padres,profesores,administradores)
+Route::group(['middleware' => ['cors', 'json.response','auth:api']], function () {
     Route::post('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
 });
-
-//Por ejemplo si quiero que tal ruta solo pueda ser para administradores, pondre aqui el
-//middleware del administrador
-Route::post('route','Controller@method')->middleware('<middleware-name-here>');
+//Para usuarios Profesores
+Route::group(['middleware' => ['cors', 'json.response','auth:api','api.profesor']], function () {
+   Route::get('/getAllAlumnos', 'AlumnoController@index')->name('index.api');
+});
+//Para usuarios Administradores
+Route::group(['middleware' => ['cors', 'json.response','auth:api','api.administrador']], function () {
+});

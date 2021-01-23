@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Middleware;
-use Illuminate\Support\Facades\Auth;
-use Closure;
 
-class Administrador
+use Closure;
+use Illuminate\Support\Facades\Auth;
+
+class AdministradorAuth
 {
     /**
      * Handle an incoming request.

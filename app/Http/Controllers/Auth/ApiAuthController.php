@@ -44,14 +44,14 @@ class ApiAuthController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                $response = ['token' => $token,'nivel' => $user->nivel];
-                return response($response, 200);
+                $response = ['user' =>$user];
+                return response()->json($response,200);
             } else {
-                $response = ["message" => "Password mismatch"];
+                $response = ["message" => "Contraseña incorrecta"];
                 return response($response, 422);
             }
         } else {
-            $response = ["message" =>'User does not exist'];
+            $response = ["message" =>'El usuario no existe'];
             return response($response, 422);
         }
     }
@@ -59,7 +59,7 @@ class ApiAuthController extends Controller
     public function logout (Request $request) {
         $token = $request->user()->token();
         $token->revoke();
-        $response = ['message' => 'You have been successfully logged out!'];
+        $response = ['message' => 'Has cerrado sesión correctamente'];
         return response($response, 200);
     }
 }
