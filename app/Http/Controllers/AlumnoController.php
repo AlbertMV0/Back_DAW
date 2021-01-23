@@ -47,7 +47,7 @@ class AlumnoController extends Controller
      */
     public function show($id)
     {
-        //
+        $alumnos=Alumno::where('id_alumno');
     }
 
     /**

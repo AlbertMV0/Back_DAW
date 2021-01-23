@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ArticleController extends Controller
+class ClaseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +13,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $response = ['message' =>  'index function'];
-return response($response, 200);
+        
     }
 
     /**
@@ -22,10 +21,10 @@ return response($response, 200);
      *
      * @return \Illuminate\Http\Response
      */
-    /*public function create()
+    public function create()
     {
         //
-    }*/
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,8 +35,6 @@ return response($response, 200);
     public function store(Request $request)
     {
         //
-        $response = ['message' =>  'store function'];
-return response($response, 200);
     }
 
     /**
@@ -49,8 +46,6 @@ return response($response, 200);
     public function show($id)
     {
         //
-        $response = ['message' =>  'show function'];
-return response($response, 200);
     }
 
     /**
@@ -59,10 +54,10 @@ return response($response, 200);
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    /*public function edit($id)
+    public function edit($id)
     {
         //
-    }*/
+    }
 
     /**
      * Update the specified resource in storage.
@@ -73,8 +68,7 @@ return response($response, 200);
      */
     public function update(Request $request, $id)
     {
-        $response = ['message' =>  'update function'];
-return response($response, 200);
+        //
     }
 
     /**
@@ -86,7 +80,5 @@ return response($response, 200);
     public function destroy($id)
     {
         //
-        $response = ['message' =>  'destroy function'];
-return response($response, 200);
     }
 }

@@ -31,7 +31,9 @@ Route::group(['middleware' => ['cors', 'json.response','auth:api']], function ()
 });
 //Para usuarios Profesores
 Route::group(['middleware' => ['cors', 'json.response','auth:api','api.profesor']], function () {
+   Route::get('/getAllUsuarios', 'AlumnoController@index')->name('index.api');
    Route::get('/getAllAlumnos', 'AlumnoController@index')->name('index.api');
+   Route::get('/getAllClases', 'AlumnoController@index')->name('index.api');
 
 });
 //Para usuarios Administradores
