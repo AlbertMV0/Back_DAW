@@ -28,14 +28,14 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 Route::group(['middleware' => ['cors', 'json.response','auth:api']], function () {
     Route::get('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
     Route::get('/usuarioLogeado', 'UserController@show');
+    Route::get('/getAllAlumnos', 'AlumnoController@index');
 });
 //Para usuarios Profesores
 Route::group(['middleware' => ['cors', 'json.response','auth:api','api.profesor']], function () {
-   Route::get('/getAllUsuarios', 'AlumnoController@index')->name('index.api');
-   Route::get('/getAllAlumnos', 'AlumnoController@index')->name('index.api');
-   Route::get('/getAllClases', 'AlumnoController@index')->name('index.api');
-
+  
 });
 //Para usuarios Administradores
 Route::group(['middleware' => ['cors', 'json.response','auth:api','api.administrador']], function () {
+    Route::get('/getAllUsuarios', 'UserController@index');
+    Route::get('/getAllClases', 'ClaseController@index');
 });

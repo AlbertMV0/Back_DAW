@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Alumno;
+use App\Clase;
 
 class AlumnoController extends Controller
 {
@@ -15,7 +16,11 @@ class AlumnoController extends Controller
     public function index()
     { 
         $alumnos=Alumno::all();
-        return response()->json($alumnos);
+        foreach($alumnos as $alumno){
+           
+            $alumno->Clase= $clase=Clase::find($alumno->id_clase){'nombre_clase'};
+        }
+        return response($alumnos);
     }
 
     /**

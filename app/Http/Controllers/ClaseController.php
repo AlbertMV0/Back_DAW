@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Clase;
+use App\Profesor;
+use App\User;
 
 class ClaseController extends Controller
 {
@@ -13,7 +16,15 @@ class ClaseController extends Controller
      */
     public function index()
     {
+        $clases=Clase::All();
+        foreach($clases as $clase){
+            //$clase->profesor;
+            $user=User::find($clase->id_profesor);
+            $clase->prof=$user{'name'};
+            //$clase->prof=Profesor::where('id_profesor',$clase->id_profesor)->first();
+        }
         
+        return response($clases);
     }
 
     /**

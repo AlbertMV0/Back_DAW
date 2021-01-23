@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Clase;
+use App\Profesor;
 use App\User;
+use App\Alumno;
+use App\Padre;
 
 class UserController extends Controller
 {
@@ -14,7 +18,18 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users=User::all();
+
+        foreach($users as $user){
+            if ($user->nivel==0) {
+                $padre=Padre::find($user->id);
+                $user->alumno=Alumno::where('id_padre', $padre{'id_padre'})->first();
+            }else if($user->nivel==1){
+                $profesor=Profesor::find($user->id);
+                $user->clase=Clase::where('id_profesor', $profesor{'id_profesor'})->first(){'nombre_clase'};
+            } 
+        }
+        return response($users);
     }
 
     /**

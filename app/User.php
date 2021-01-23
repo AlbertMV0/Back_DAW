@@ -11,6 +11,18 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
+    public function Profesor(){
+        return $this->hasOne(Profesor::class,'id_profesor');
+    }
+
+    public function Padre(){
+        return $this->hasOne(Padre::class,'id_profesor');
+    }
+
+    public function Administrador(){
+        return $this->hasOne(Administrador::class,'id_profesor');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -37,4 +49,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $table = 'users';
+    protected $primaryKey = 'id';
 }
