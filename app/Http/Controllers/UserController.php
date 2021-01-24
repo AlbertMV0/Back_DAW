@@ -19,15 +19,16 @@ class UserController extends Controller
     public function index()
     {
         $users=User::all();
-
+ 
         foreach($users as $user){
             if ($user->nivel==0) {
                 $padre=Padre::find($user->id);
-                $user->alumno=Alumno::where('id_padre', $padre{'id_padre'})->first();
+                //$user->alumno=Alumno::where('id_padre', $padre{'id_padre'})->first();
+                $user->alumno=$padre->hijos;
             }else if($user->nivel==1){
                 $profesor=Profesor::find($user->id);
                 $user->clase=Clase::where('id_profesor', $profesor{'id_profesor'})->first(){'nombre_clase'};
-            } 
+            }
         }
         return response($users);
     }
@@ -39,7 +40,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
