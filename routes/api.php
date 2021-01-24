@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 //Para todos (no logeados y logeados)
 Route::group(['middleware' => ['cors', 'json.response']], function () {
-    
     Route::post('/login', 'Auth\ApiAuthController@login')->name('login.api');
     Route::post('/register','Auth\ApiAuthController@register')->name('register.api');
 });
@@ -25,14 +24,18 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 Route::group(['middleware' => ['cors', 'json.response','auth:api']], function () {
     Route::get('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
     Route::get('/usuarioLogeado', 'UserController@show');
-    Route::get('/getAllAlumnos', 'AlumnoController@index');
+    Route::get('/cambiarDatos', 'UserController@edit');
 });
 //Para usuarios Profesores
 Route::group(['middleware' => ['cors', 'json.response','auth:api','api.profesor']], function () {
+    Route::get('/getAllAlumnos', 'AlumnoController@index');
+    Route::get('/addComentario', 'AlumnoController@createComentario');
   
 });
 //Para usuarios Administradores
 Route::group(['middleware' => ['cors', 'json.response','auth:api','api.administrador']], function () {
     Route::get('/getAllUsuarios', 'UserController@index');
     Route::get('/getAllClases', 'ClaseController@index');
+    Route::get('/createUser', 'UserController@create');
+    Route::get('/createAlumno', 'AlumnoController@create');
 });
