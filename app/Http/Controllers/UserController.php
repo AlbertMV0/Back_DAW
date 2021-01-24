@@ -23,8 +23,8 @@ class UserController extends Controller
         foreach($users as $user){
             if ($user->nivel==0) {
                 $padre=Padre::find($user->id);
-                //$user->alumno=Alumno::where('id_padre', $padre{'id_padre'})->first();
-                $user->alumno=$padre->hijos;
+                $user->alumno=Alumno::where('id_padre', $padre{'id_padre'})->first();
+                //$user->alumno=$padre->hijos;
             }else if($user->nivel==1){
                 $profesor=Profesor::find($user->id);
                 $user->clase=Clase::where('id_profesor', $profesor{'id_profesor'})->first(){'nombre_clase'};
@@ -38,6 +38,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function create()
     {
         
