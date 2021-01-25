@@ -8,6 +8,7 @@ use App\Profesor;
 use App\User;
 use App\Alumno;
 use App\Padre;
+use App\Alumno_padre;
 
 class UserController extends Controller
 {
@@ -21,10 +22,22 @@ class UserController extends Controller
         $users=User::all();
  
         foreach($users as $user){
-            if ($user->nivel==0) {
+            if ($user->nivel==0) {;
                 $padre=Padre::find($user->id);
-                $user->alumno=Alumno::where('id_padre', $padre{'id_padre'})->first();
-                //$user->alumno=$padre->hijos;
+                if(!empty($padre)){
+                $hijos=Alumno_padre::where('id_padre',$user->id)->get();
+                $children=[];
+                if(count($hijos)>0){
+                    foreach($hijos as $hijo){
+                        $alumno=array(
+                            'nombre'=>(Alumno::find($hijo['id_alumno'])['nombre']),
+                            'id_alumno'=>(Alumno::find($hijo['id_alumno'])['id_alumno']),
+                            );
+                        array_push($children,$alumno);
+                    }
+                }
+                $user->alumnos=$children;
+                }
             }else if($user->nivel==1){
                 $profesor=Profesor::find($user->id);
                 $user->clase=Clase::where('id_profesor', $profesor{'id_profesor'})->first(){'nombre_clase'};
