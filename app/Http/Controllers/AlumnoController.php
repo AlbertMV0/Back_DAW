@@ -18,7 +18,7 @@ class AlumnoController extends Controller
         $alumnos=Alumno::all();
         foreach($alumnos as $alumno){
            
-            $alumno->Clase= $clase=Clase::find($alumno->id_clase){'nombre_clase'};
+            $alumno->clase= $clase=Clase::find($alumno->id_clase){'nombre_clase'};
         }
         return response($alumnos);
     }
