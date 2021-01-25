@@ -36,11 +36,13 @@ class UserController extends Controller
                         array_push($children,$alumno);
                     }
                 }
+                $user->tipo="Padre";
                 $user->alumnos=$children;
                 }
             }else if($user->nivel==1){
                 $profesor=Profesor::find($user->id);
                 $user->clase=Clase::where('id_profesor', $profesor{'id_profesor'})->first(){'nombre_clase'};
+                $user->tipo="Profesor";
             }
         }
         return response($users);
