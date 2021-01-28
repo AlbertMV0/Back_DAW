@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //Para todos (no logeados y logeados)
 Route::group(['middleware' => ['cors']], function () {
     Route::post('/login', 'Auth\ApiAuthController@login')->name('login.api');
-    Route::post('/register','Auth\ApiAuthController@register')->name('register.api');
+    Route::post('/registerUser','Auth\ApiAuthController@register')->name('register.api');
 });
 
 //Para usuarios general (padres,profesores,administradores) 'json.response'

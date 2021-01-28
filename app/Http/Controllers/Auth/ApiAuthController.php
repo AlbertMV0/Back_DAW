@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Profesor;
+use App\Padre;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -13,21 +15,33 @@ class ApiAuthController extends Controller
 {
     public function register (Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'name' => 'required|string|max:100',
+            'email' => 'required|string|email|max:100|unique:users',
+            'password' => 'required|string|min:6',
             'apellidos' => 'required|string|max:200',
+            'telefono' => 'numeric',
+            'direccion' => 'string|max:200',
             'nivel' => 'required',
+            'habilitado' => 'required'
         ]);
         if ($validator->fails())
         {
             return response(['errors'=>$validator->errors()->all()], 422);
         }
+
+        //$habilitado=['habilitado'=>0];
+        //array_push($request->toArray(), $habilitado);
         $request['password']=Hash::make($request['password']);
         $request['remember_token'] = Str::random(10);
         $user = User::create($request->toArray());
+        if($request->toArray(){'nivel'}==0){
+            Padre::create(['id_padre'=>$user->id]);
+        }else{
+            Profesor::create(['id_profesor'=>$user->id]);
+        }
+
         $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-        $response = ['token' => $token];
+        $response = ['token' => $token,'UsuarioCreado'=>$user,'datos'=>($request->toArray())];
         return response($response, 200);
     }
 
