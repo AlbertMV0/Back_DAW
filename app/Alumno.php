@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Alumno extends Model
 {
 
+    protected $fillable = [ 
+        'nombre', 'apellidos', 'edad','aficiones','genero','id_clase'
+    ];
+
+
     public function padres(){
         return $this->belongsToMany(Padre::class, 'alumno_padre');
     }
