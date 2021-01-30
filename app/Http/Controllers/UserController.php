@@ -80,8 +80,30 @@ class UserController extends Controller
      */
     public function show(Request $request)
     {
-        return response()->json($request->user());
+        $user=$request->user();
+        if ($user->nivel ==0){
+            $hijos=Alumno_padre::where('id_padre',$user->id)->get();
+            $children=[];
+            if(count($hijos)>0){
+                foreach($hijos as $hijo){
+                    $alumno=array(
+                        'nombre'=>(Alumno::find($hijo['id_alumno'])['nombre']),
+                        'id_alumno'=>(Alumno::find($hijo['id_alumno'])['id_alumno']),
+                        'id_clase'=>(Alumno::find($hijo['id_alumno'])['id_clase']),
+                        );
+                    array_push($children,$alumno);
+                }
+            $user->tipo="Padre";
+            $user->alumnos=$children;
+        }else if($user->nivel==1){
+            $profesor=Profesor::find($user->id);
+            $user->clase=Clase::where('id_profesor', $profesor{'id_profesor'})->first(){'nombre_clase'};
+            $user->tipo="Profesor";
+        }
     }
+        return response()->json($user);
+    
+    }   
 
     /**
      * Show the form for editing the specified resource.
