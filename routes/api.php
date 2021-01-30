@@ -30,6 +30,7 @@ Route::group(['middleware' => ['cors','auth:api']], function () {
 Route::group(['middleware' => ['cors','auth:api','api.profesor']], function () {
     Route::get('/getAllAlumnos', 'AlumnoController@index');
     Route::get('/addComentario', 'AlumnoController@createComentario');
+    Route::post('/getClase', 'ClaseController@show');
   
 });
 //Para usuarios Administradores

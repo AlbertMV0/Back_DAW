@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Clase;
 use App\Profesor;
 use App\User;
+use App\Alumno;
 
 class ClaseController extends Controller
 {
@@ -18,7 +19,6 @@ class ClaseController extends Controller
     {
         $clases=Clase::All();
         foreach($clases as $clase){
-            //$clase->profesor;
             $user=User::find($clase->id_profesor);
             $clase->prof=$user{'name'};
             //$clase->prof=Profesor::where('id_profesor',$clase->id_profesor)->first();
@@ -54,9 +54,17 @@ class ClaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $clase=Clase::find($request->id);
+        
+            //$clase->profesor;
+            $user=User::find($clase->id_profesor);
+            $clase->prof=$user{'name'};
+            $clase->alumnos=Alumno::where('id_clase',$clase->id_clase)->get();
+        
+        
+        return response($clase);
     }
 
     /**
