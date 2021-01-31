@@ -73,9 +73,31 @@ class ClaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $class=Clase::find($request->id_clase);
+
+        if($request->nombre!="null"){
+            $class['nombre_clase']=$request->nombre_clase;
+        }
+
+        if($request->id_profesor!=null){
+            $profesor=Profesor::find($request->id_profesor);
+        if($profesor!=null){
+            $clases=Clase::all();
+            foreach ($clases as $clase) {
+                if($clase['id_profesor']==$request->id_profesor){
+                    return response(['errors'=>"Ese profesor ya tiene otra clase. Introduce un profesor válido"], 422);
+                }
+            }
+        $class['id_profesor']=$request->id_profesor;  
+        }else{
+            return response(['errors'=>"Ese profesor no existe"], 422);
+
+        }
+    }
+        $class->save();
+        return response($class, 200);
     }
 
     /**

@@ -48,4 +48,5 @@ Route::group(['middleware' => ['cors','auth:api','api.administrador']], function
     Route::get('/createUser', 'UserController@create');
     Route::get('/createAlumno', 'AlumnoController@create');
     Route::post('/registerAlumno','Auth\ApiAuthController@registerAlumno');
+    Route::post('/editClase', 'ClaseController@edit');
 });
