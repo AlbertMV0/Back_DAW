@@ -33,6 +33,8 @@ Route::group(['middleware' => ['cors','auth:api']], function () {
 Route::group(['middleware' => ['cors','auth:api','api.profesor']], function () {
     Route::get('/getAllAlumnos', 'AlumnoController@index');
     Route::get('/addComentario', 'AlumnoController@createComentario');
+    Route::post('/addComentario', 'AlumnoController@crearComentario');
+    Route::post('/verComentarios', 'AlumnoController@verComentarios');
   
 });
 //Para usuarios Administradores

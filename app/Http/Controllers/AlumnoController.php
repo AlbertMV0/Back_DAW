@@ -122,11 +122,18 @@ class AlumnoController extends Controller
     public function crearComentario(Request $request)
     {
         $fecha=date('Y-m-d');
-        $comentario=array('fecha'=>date('Y-m-d'),'comentario'=>$request->comentario
+        $comentario=array('fecha'=>$fecha,'comentario'=>$request->comentario
     ,'id_alumno'=>$request->id_alumno);
         
         $comentario = Comentario::create($comentario);
         return response($comentario, 200);
+    }
+
+    public function verComentarios(Request $request)
+    {
+        $comentarios=Comentario::where('id_alumno',$request->id_alumno)->get();
+        
+        return response($comentarios, 200);
     }
 
     /**
