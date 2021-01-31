@@ -87,35 +87,41 @@ class AlumnoController extends Controller
      */
     public function edit(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:50',
-            'apellidos' => 'required|string|max:200',
-            'edad' => 'required|numeric',
-            'genero' => 'required|string|max:50',
-            'aficiones' => 'string|max:200',
-            'alergias' => ' string|max:200',
-            'id_clase' => 'required| numeric',
-        ]);
-        if ($validator->fails())
-        {
-            return response(['errors'=>$validator->errors()->all()], 422);
-        }
         $alumno=Alumno::find($request->id_alumno);
-        $alumno['nombre']=$request->nombre;
-        $alumno['apellidos']=$request->apellidos;
-        $alumno['edad']=$request->edad;
-        $alumno['genero']=$request->genero;
-        $alumno['aficiones']=$request->aficiones;
-        $alumno['alergias']=$request->alergias;
-        $alumno['id_clase']=$request->id_clase;
-        $clase=Clase::find($alumno['id_clase']);
+        if($request->nombre!="null"){
+            $alumno['nombre']=$request->nombre;
+        }
 
-        if(empty($clase)){
-            return response(['errors'=>"Esa clase no existe"], 422);
+        if($request->apellidos!="null"){
+            $alumno['apellidos']=$request->apellidos;
+        }
+
+        if($request->edad!="null"){
+            $alumno['edad']=$request->edad;
+        }
+
+        if($request->genero!="null"){
+            $alumno['genero']=$request->genero;
+        }
+
+        if($request->aficiones!="null"){
+            $alumno['aficiones']=$request->aficiones;
+        }
+
+        if($request->alergias!="null"){
+            $alumno['alergias']=$request->alergias;
+        }
+
+        if($request->id_clase!="null"){
+            $clase=Clase::find($request->id_clase);
+            if($clase=="null"){
+                return response(['errors'=>"Esa clase no existe"], 422);
+            }else{
+                $alumno['id_clase']=$request->id_clase;
+            }
         }
 
         $alumno->save();
-
         return response($alumno, 200);
     }
 
