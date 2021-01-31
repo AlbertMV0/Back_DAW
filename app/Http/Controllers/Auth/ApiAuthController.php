@@ -45,36 +45,7 @@ class ApiAuthController extends Controller
         $response = ['token' => $token,'UsuarioCreado'=>$user,'datos'=>($request->toArray())];
         return response($response, 200);
     }
-    public function registerAlumno (Request $request) {
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:50',
-            'apellidos' => 'required|string|max:200',
-            'edad' => 'required|numeric',
-            'genero' => 'string|max:50',
-        ]);
-        if ($validator->fails())
-        {
-            return response(['errors'=>$validator->errors()->all()], 422);
-        }
-
-        //$habilitado=['habilitado'=>0];
-        //array_push($request->toArray(), $habilitado);
-      
-        $id_clase=$request->toArray(){'id_clase'};
-
-        if($id_clase!="" && $id_clase!=null){
-            $clase=Clase::find($id_clase)->first();
-            if($clase==null){
-                return response(['errors'=>"La clase con el id introducido no existe"], 422);
-            }else{
-                $alumno = Alumno::create($request->toArray());
-            }
-        }
-
-       
-        $response = ['Alumno'=>$alumno];
-        return response($response, 200);
-    }
+   
 
     public function login (Request $request) {
         $validator = Validator::make($request->all(), [

@@ -210,8 +210,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $user=User::find($request->id);
+
+            if($user!="null"){
+                User::destroy($request->id);
+            }else{
+                return response(['errors'=>"Ese User no existe"], 422);
+            }
+    
+            return response(["message"=>'Usuario eliminado'], 200);
     }
 }

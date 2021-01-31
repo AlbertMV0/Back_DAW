@@ -24,7 +24,6 @@ Route::group(['middleware' => ['cors','auth:api']], function () {
     Route::get('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
     Route::get('/usuarioLogeado', 'UserController@userLogeado');
     Route::post('/getUser', 'UserController@show');
-    //Route::get('/cambiarDatos', 'UserController@edit');
     Route::post('/editAlumno', 'AlumnoController@edit');
     Route::post('/editUser', 'UserController@edit');
     Route::post('/registerUser','Auth\ApiAuthController@register')->name('register.api');
@@ -43,10 +42,14 @@ Route::group(['middleware' => ['cors','auth:api','api.profesor']], function () {
 });
 //Para usuarios Administradores
 Route::group(['middleware' => ['cors','auth:api','api.administrador']], function () {
-    Route::get('/getAllUsuarios', 'UserController@index');
     Route::get('/getAllClases', 'ClaseController@index');
-    Route::get('/createUser', 'UserController@create');
-    Route::get('/createAlumno', 'AlumnoController@create');
-    Route::post('/registerAlumno','Auth\ApiAuthController@registerAlumno');
     Route::post('/editClase', 'ClaseController@edit');
+    Route::get('/createUser', 'UserController@create');
+    Route::get('/getAllUsuarios', 'UserController@index');
+    Route::post('/deleteUsuario', 'UserController@destroy');
+    Route::post('/createAlumno', 'AlumnoController@create');
+    Route::post('/registerAlumno','Auth\ApiAuthController@registerAlumno');
+    Route::post('/createAlumno', 'AlumnoController@create');
+    Route::post('/deleteUser', 'UserController@destroy');
+    
 });
