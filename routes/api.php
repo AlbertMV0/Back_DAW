@@ -22,7 +22,8 @@ Route::group(['middleware' => ['cors']], function () {
 //Para usuarios general (padres,profesores,administradores) 'json.response'
 Route::group(['middleware' => ['cors','auth:api']], function () {
     Route::get('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
-    Route::get('/usuarioLogeado', 'UserController@show');
+    Route::get('/usuarioLogeado', 'UserController@userLogeado');
+    Route::post('/getUser', 'UserController@show');
     //Route::get('/cambiarDatos', 'UserController@edit');
     Route::post('/editAlumno', 'AlumnoController@edit');
     Route::post('/editUser', 'UserController@edit');

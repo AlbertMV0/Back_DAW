@@ -80,7 +80,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function userLogeado(Request $request)
     {
         $user=$request->user();
         if ($user->nivel ==0){
@@ -101,8 +101,34 @@ class UserController extends Controller
         }else if($user->nivel==1){
             $user->clase=Clase::where('id_profesor', $user->id)->first();
         }
-       
     
+        return response()->json($user);
+    }   
+
+  
+    public function show(Request $request)
+    {
+        $user=User::find($request->id);
+        if ($user['nivel'] ==0){
+            $hijos=Alumno_padre::where('id_padre',$user['id'])->get();
+            $children=[];
+            if(count($hijos)>0){
+                foreach($hijos as $hijo){
+                    $alumno=array(
+                        'nombre'=>(Alumno::find($hijo['id_alumno'])['nombre']),
+                        'id_alumno'=>(Alumno::find($hijo['id_alumno'])['id_alumno']),
+                        'id_clase'=>(Alumno::find($hijo['id_alumno'])['id_clase']),
+                        );
+                    array_push($children,$alumno);
+                }
+            $user->tipo="Padre";
+            $user->alumnos=$children;
+            }
+        }else if($user->nivel==1){
+            $user->clase=Clase::where('id_profesor', $user->id)->first();
+        }
+       
+
         return response()->json($user);
     
     }   
@@ -116,45 +142,51 @@ class UserController extends Controller
     public function edit(Request $request)
     {
         $user=User::find($request->id);
-        if($request->name!=null){
+        if($request->name!="null"){
             $user['name']=$request->name;
         }
-        if($request->email!=null){
+        if($request->email!="null"){
             $user['email']=$request->email;
         }
-        if($request->password!=null){
+        if($request->password!="null"){
             $request['password']=Hash::make($request['password']);
             $user['password']= $request['password'];
         }
-        if($request->apellidos!=null){
+        if($request->apellidos!="null"){
             $user['apellidos']=$request->apellidos;
         }
-        if($request->telefono!=null){
+        if($request->telefono!="null"){
             $user['telefono']=$request->telefono;
         }
-        if($request->direccion!=null){
+        if($request->direccion!="null"){
             $user['direccion']=$request->direccion;
         }
-        if($request->experiencia!=null){
+        if($request->experiencia!="null"){
             $profesor=Profesor::find($user['id']);
             $profesor['experiencia']=$request->experiencia;
+            $profesor->save();
         }
-        if($request->estado_civil!=null){
-            $padre=Padre::find($user['id']);
-            $padre['estado_civil']=$request->estado_civil;
-        }
-        
 
-        if(!empty($request->id_alumno)){
+        if($request->id_alumno!="null"){
             $alumno=Alumno::find($request->id_alumno);
-            if(!empty($alumno)){
-                $alumno_padre=array('id_padre'=>$user['id'],'id_alumno'=>$alumno['id_alumno']);
-                $comentario = Alumno_padre::create($alumno_padre);
+            if($alumno!=null){
+                $hijo_existente=Alumno_padre::where('id_padre',$user['id'])->where('id_alumno',$alumno['id_alumno'])->first();
+                
+                if(!$hijo_existente){
+                    $alumno_padre=array('id_padre'=>$user['id'],'id_alumno'=>$alumno['id_alumno']);
+                    $comentario = Alumno_padre::create($alumno_padre);
+            }else{
+                return response(['errors'=>"Ya es padre de ese alumno"], 422);
+            }
             }else{
                 return response(['errors'=>"Ese alumno no existe"], 422);
             }
         }
-
+        if($request->estado_civil!="null"){
+            $padre=Padre::find($user['id']);
+            $padre['estado_civil']=$request->estado_civil;
+            $padre->save();
+        }
         $user->save();
 
         return response($user, 200);
