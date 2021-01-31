@@ -26,6 +26,7 @@ Route::group(['middleware' => ['cors','auth:api']], function () {
     Route::get('/cambiarDatos', 'UserController@edit');
     Route::post('/registerUser','Auth\ApiAuthController@register')->name('register.api');
     Route::post('/getClase', 'ClaseController@show');
+    Route::post('/getAlumno', 'AlumnoController@show');
 });
 
 //Para usuarios Profesores
