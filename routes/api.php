@@ -24,9 +24,12 @@ Route::group(['middleware' => ['cors','auth:api']], function () {
     Route::get('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
     Route::get('/usuarioLogeado', 'UserController@show');
     Route::get('/cambiarDatos', 'UserController@edit');
+    Route::post('/editAlumno', 'AlumnoController@edit');
     Route::post('/registerUser','Auth\ApiAuthController@register')->name('register.api');
     Route::post('/getClase', 'ClaseController@show');
     Route::post('/getAlumno', 'AlumnoController@show');
+    Route::post('/verComentarios', 'AlumnoController@verComentarios');
+
 });
 
 //Para usuarios Profesores
@@ -34,7 +37,6 @@ Route::group(['middleware' => ['cors','auth:api','api.profesor']], function () {
     Route::get('/getAllAlumnos', 'AlumnoController@index');
     Route::get('/addComentario', 'AlumnoController@createComentario');
     Route::post('/addComentario', 'AlumnoController@crearComentario');
-    Route::post('/verComentarios', 'AlumnoController@verComentarios');
   
 });
 //Para usuarios Administradores

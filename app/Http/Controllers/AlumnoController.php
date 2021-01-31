@@ -7,6 +7,8 @@ use App\Alumno;
 use App\Clase;
 use App\User;
 use App\Comentario;
+use App\Alumno_padre;
+use Illuminate\Support\Facades\Validator;
 
 class AlumnoController extends Controller
 {
@@ -71,7 +73,7 @@ class AlumnoController extends Controller
         }
        
         if($permiso){
-            return response(['alumno'=>$alumno], 200);
+            return response($alumno, 200);
         }else{
             return response(['errors'=>"Acceso del alumno no válido"], 422);
         }
@@ -83,40 +85,39 @@ class AlumnoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'string|max:50',
-            'apellidos' => 'string|max:200',
-            'edad' => 'numeric',
-            'genero' => 'max:50',
-            'aficiones' => 'string|max:200',
-            'alergias' => 'string|max:200',
+            'nombre' => 'required|string|max:50',
+            'apellidos' => 'required|string|max:200',
+            'edad' => 'required|numeric',
+            'genero' => 'required|string|max:50',
+            'aficiones' => 'required| string|max:200',
+            'alergias' => 'required| string|max:200',
+            'id_clase' => 'required| numeric',
         ]);
         if ($validator->fails())
         {
             return response(['errors'=>$validator->errors()->all()], 422);
         }
+        $alumno=Alumno::find($request->id_alumno);
+        $alumno->save();
+        $alumno['nombre']=$request->nombre;
+        $alumno['apellidos']=$request->apellidos;
+        $alumno['edad']=$request->edad;
+        $alumno['genero']=$request->genero;
+        $alumno['aficiones']=$request->aficiones;
+        $alumno['alergias']=$request->alergias;
+        $alumno['id_clase']=$request->id_clase;
+        $clase=Clase::find($alumno['id_clase']);
 
-
-
-        //$habilitado=['habilitado'=>0];
-        //array_push($request->toArray(), $habilitado);
-      
-        $id_clase=$request->toArray(){'id_clase'};
-
-        if($id_clase!="" && $id_clase!=null){
-            $clase=Clase::find($id_clase)->first();
-            if($clase==null){
-                return response(['errors'=>"La clase con el id introducido no existe"], 422);
-            }else{
-                $alumno = Alumno::create($request->toArray());
-            }
+        if(empty($clase)){
+            return response(['errors'=>"Esa clase no existe"], 422);
         }
 
-       
-        $response = ['Alumno'=>$alumno];
-        return response($response, 200);
+        $alumno->save();
+
+        return response($alumno, 200);
     }
 
     public function crearComentario(Request $request)
@@ -132,7 +133,7 @@ class AlumnoController extends Controller
     public function verComentarios(Request $request)
     {
         $comentarios=Comentario::where('id_alumno',$request->id_alumno)->get();
-        
+
         return response($comentarios, 200);
     }
 
