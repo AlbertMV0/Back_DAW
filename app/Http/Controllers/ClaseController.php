@@ -77,27 +77,30 @@ class ClaseController extends Controller
     {
         $class=Clase::find($request->id_clase);
 
-        if($request->nombre!="null"){
+        if($request->nombre_clase!="null"){
             $class['nombre_clase']=$request->nombre_clase;
         }
 
-        if($request->id_profesor!=null){
-            $profesor=Profesor::find($request->id_profesor);
-        if($profesor!=null){
-            $clases=Clase::all();
-            foreach ($clases as $clase) {
-                if($clase['id_profesor']==$request->id_profesor){
-                    return response(['errors'=>"Ese profesor ya tiene otra clase. Introduce un profesor válido"], 422);
-                }
-            }
-        $class['id_profesor']=$request->id_profesor;  
-        }else{
-            return response(['errors'=>"Ese profesor no existe"], 422);
+        if($request->id_profesor!="null"){
+            return response($class, 200);
 
+            $profesor=Profesor::find($request->id_profesor);
+            if($profesor!="null"){
+                $clases=Clase::all();
+                foreach ($clases as $clase) {
+                    if($clase['id_profesor']==$request->id_profesor){
+                        return response(['errors'=>"Ese profesor ya tiene otra clase. Introduce un profesor válido"], 422);
+                    }
+                }
+            $class['id_profesor']=$request->id_profesor;  
+            }else{
+                return response(['errors'=>"Ese profesor no existe"], 422);
+            }
         }
-    }
+
         $class->save();
         return response($class, 200);
+        
     }
 
     /**
