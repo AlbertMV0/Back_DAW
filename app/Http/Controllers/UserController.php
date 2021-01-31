@@ -9,6 +9,8 @@ use App\User;
 use App\Alumno;
 use App\Padre;
 use App\Alumno_padre;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -111,9 +113,51 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $user=User::find($request->id);
+        if($request->name!=null){
+            $user['name']=$request->name;
+        }
+        if($request->email!=null){
+            $user['email']=$request->email;
+        }
+        if($request->password!=null){
+            $request['password']=Hash::make($request['password']);
+            $user['password']= $request['password'];
+        }
+        if($request->apellidos!=null){
+            $user['apellidos']=$request->apellidos;
+        }
+        if($request->telefono!=null){
+            $user['telefono']=$request->telefono;
+        }
+        if($request->direccion!=null){
+            $user['direccion']=$request->direccion;
+        }
+        if($request->experiencia!=null){
+            $profesor=Profesor::find($user['id']);
+            $profesor['experiencia']=$request->experiencia;
+        }
+        if($request->estado_civil!=null){
+            $padre=Padre::find($user['id']);
+            $padre['estado_civil']=$request->estado_civil;
+        }
+        
+
+        if(!empty($request->id_alumno)){
+            $alumno=Alumno::find($request->id_alumno);
+            if(!empty($alumno)){
+                $alumno_padre=array('id_padre'=>$user['id'],'id_alumno'=>$alumno['id_alumno']);
+                $comentario = Alumno_padre::create($alumno_padre);
+            }else{
+                return response(['errors'=>"Ese alumno no existe"], 422);
+            }
+        }
+
+        $user->save();
+
+        return response($user, 200);
     }
 
     /**

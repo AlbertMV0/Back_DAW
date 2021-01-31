@@ -92,8 +92,8 @@ class AlumnoController extends Controller
             'apellidos' => 'required|string|max:200',
             'edad' => 'required|numeric',
             'genero' => 'required|string|max:50',
-            'aficiones' => 'required| string|max:200',
-            'alergias' => 'required| string|max:200',
+            'aficiones' => 'string|max:200',
+            'alergias' => ' string|max:200',
             'id_clase' => 'required| numeric',
         ]);
         if ($validator->fails())
@@ -101,7 +101,6 @@ class AlumnoController extends Controller
             return response(['errors'=>$validator->errors()->all()], 422);
         }
         $alumno=Alumno::find($request->id_alumno);
-        $alumno->save();
         $alumno['nombre']=$request->nombre;
         $alumno['apellidos']=$request->apellidos;
         $alumno['edad']=$request->edad;
