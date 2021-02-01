@@ -7,6 +7,7 @@ use App\Clase;
 use App\Profesor;
 use App\User;
 use App\Alumno;
+use App\Alumno_padre;
 
 class ClaseController extends Controller
 {
@@ -56,14 +57,36 @@ class ClaseController extends Controller
      */
     public function show(Request $request)
     {
-        $clase=Clase::find($request->id);
+        $user=$request->user();
+        $clase=Clase::find($request->id_clase);
+        $permiso=false;
+
+        //Comprobamos que el usuario esta accediendo a una clase donde tiene hijos matriculados
+        if($user['nivel']==0){
+            $hijos=Alumno_padre::where('id_padre',$user['id'])->get();
+            $alumnos=Alumno::where('id_clase',$clase['id_clase'])->get();
+            if($hijos!="null" && $alumnos!="null"){
+                foreach ($hijos as $hijo) {
+                    foreach ($alumnos as $alumno){
+                       if($hijo['id_alumno']==$alumno['id_alumno']){
+                           $permiso=true;
+                       }
+                    }
+                }
+            }
+        }
         
-            //$clase->profesor;
-            $user=User::find($clase->id_profesor);
-            $clase->prof=$user{'name'};
-            $clase->alumnos=Alumno::where('id_clase',$clase->id_clase)->get();
+        //Comprobamos que el profesor sea el de la clase a la que se accede
+        if($user['id']==$clase['id_profesor']){
+            $permiso=true;
+        }
+           
+        if($permiso==false){
+            return response(['errors'=>"No tienes permiso para acceder a esta clase"], 422);
+        }
         
-        
+        $clase->profesor=User::find($clase['id_profesor']);
+
         return response($clase);
     }
 
