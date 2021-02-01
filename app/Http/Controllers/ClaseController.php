@@ -60,7 +60,7 @@ class ClaseController extends Controller
         $user=$request->user();
         $clase=Clase::find($request->id_clase);
         $permiso=false;
-
+        $clase->alumnos=Alumno::where('id_clase',$clase->id_clase)->get();
         //Comprobamos que el usuario esta accediendo a una clase donde tiene hijos matriculados
         if($user['nivel']==0){
             $hijos=Alumno_padre::where('id_padre',$user['id'])->get();
