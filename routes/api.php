@@ -46,10 +46,10 @@ Route::group(['middleware' => ['cors','auth:api','api.administrador']], function
     Route::post('/editClase', 'ClaseController@edit');
     Route::get('/createUser', 'UserController@create');
     Route::get('/getAllUsuarios', 'UserController@index');
-    Route::post('/deleteUsuario', 'UserController@destroy');
     Route::post('/createAlumno', 'AlumnoController@create');
     Route::post('/registerAlumno','Auth\ApiAuthController@registerAlumno');
     Route::post('/createAlumno', 'AlumnoController@create');
     Route::post('/deleteUser', 'UserController@destroy');
+    Route::post('/deleteAlumno', 'AlumnoController@destroy');
     
 });
