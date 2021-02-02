@@ -80,6 +80,9 @@ class ClaseController extends Controller
         if($user['id']==$clase['id_profesor']){
             $permiso=true;
         }
+        if($user['nivel']==2){
+            $permiso=true;
+        }
            
         if($permiso==false){
             return response(['errors'=>"No tienes permiso para acceder a esta clase"], 422);
