@@ -45,6 +45,8 @@ class UserController extends Controller
                 $profesor=Profesor::find($user->id);
                 $user->clase=Clase::where('id_profesor', $profesor{'id_profesor'})->first(){'nombre_clase'};
                 $user->tipo="Profesor";
+            }else if($user->nivel==2){
+                $user->tipo="Administrador";
             }
         }
         return response($users);

@@ -51,5 +51,4 @@ Route::group(['middleware' => ['cors','auth:api','api.administrador']], function
     Route::post('/createAlumno', 'AlumnoController@create');
     Route::post('/deleteUser', 'UserController@destroy');
     Route::post('/deleteAlumno', 'AlumnoController@destroy');
-    
 });
